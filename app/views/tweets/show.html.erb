@@ -1,0 +1,100 @@
+<div class="content-sec color-gray">
+    <!--Title-->
+    <div class="border-down pt-1 pl-4">
+        <h5 class=""><%= link_to '<i class="fas fa-long-arrow-alt-left fa-lg"></i>'.html_safe, root_path %>&nbsp;&nbsp;Destalle Whisper </h5>
+    </div>
+
+    <!--Post Completo-->
+    <article class=" whisper-post py-3">
+      <div class="row justify-content-md-center">
+        <!--Avatar Post-->
+        <div class="col-1">
+          <%= image_tag(@tweet.user.photo_url, class: "photo-avatar-post rounded-circle ", alt: "Avatar Post")%>
+        </div>
+        <!--Nombre y Detalle -->
+        <div class="col-9">
+          <!--Fecha --->
+          <span class="text-11 color-time"><%= link_to '<i class=" fas fa-history" aria-hidden="true"></i> '.html_safe+distance_of_time_in_words(Time.now, @tweet.created_at), @tweet, class: "color-time text-decoration-none" %></span>
+          <!--Nombre-->
+          <div>
+            <i class="text-13 color-blue-deep"><strong>@<%= @tweet.user.username.capitalize %></strong></i>
+          </div>
+          <!--Detalle-->
+          <div class="text-11 border-down-white pb-2">
+            <!--Muestra si es retweet o tweet propio-->
+            <% if @tweet.is_retweet?%>
+              <!--Retweet-->
+              <%=  link_to "", @tweet.tweet_ref, class:"fas fa-registered fa-lg text-warning text-decoration-none" %>
+              <div class="row justify-content-md-center retweet-marco rounded-pill py-2 px-2">
+                <div class="col-2">
+                  <%= image_tag(@tweet.tweet_ref.user.photo_url, class: "photo-avatar-post-re rounded-circle ", style: "float:left;" ,alt: "Avatar Post")%>
+                </div>
+                <div class="col-10 " style="padding-left:0%; padding-right:10%;">
+                  <!--Fecha --->
+                  <span class="text-11 color-time"><%= link_to '<i class=" fas fa-history" aria-hidden="true"></i> '.html_safe+distance_of_time_in_words(Time.now, @tweet.tweet_ref.created_at), @tweet, class: "color-time text-decoration-none" %></span>
+                  <br>
+                  <!--Nombre-->
+                  <strong class="color-blue ">@<%= @tweet.tweet_ref.user.username.capitalize %></strong>
+                  <br>
+                  <!--Contenido-->
+                  <span><%= @tweet.tweet_ref.content %></span>>
+                </div>
+              </div>
+            <% else %>
+              <!--Comentario tweet propio-->
+              &nbsp;&nbsp;&nbsp;<%= @tweet.content %>
+            <% end %>
+          </div>
+          <!--Botones Likes y Re-Tweet-->
+          <div class="text-11 div-like-rewhisper pt-1">
+            <div class="row">
+              <!--Like-->
+              <div class="col-6">
+                <span>
+                  <% if @tweet.is_liked?(current_user) %>
+                    <%= link_to '<i class="fas fa-heart"></i>'.html_safe, tweet_likes_path(@tweet), method: :post, class: "text-warning" %>
+                  <% else %>
+                    <%= link_to '<i class="far fa-heart"></i>'.html_safe, tweet_likes_path(@tweet),method: :post, class: "text-white" %>
+                  <% end %>
+                  &nbsp;&nbsp;<%= @tweet.likes.count %>
+                </span>
+              </div>
+              <!--Retweet-->
+              <div class="col-6">
+                <span>
+                  <% if @tweet.is_rt?(current_user, @tweet) %>
+                    <%= link_to '', tweet_retweet_path(@tweet), method: :post, class: "fas fa-retweet text-white text-decoration-none"%>
+                  <% else %>
+                    <%= link_to '', tweet_retweet_path(@tweet), method: :post, class: "fas fa-retweet text-warning text-decoration-none"%>
+                  <% end %>
+                  &nbsp;&nbsp;<%= @tweet.count_rt %>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+</div>
+
+<div class="mx-4 pt-3">
+  <div>
+    <h6>Like <i class="fas fa-heart"></i></h6>
+  </div>
+  <div>
+    <% @tweet.linking_users.each do |user| %>
+      <%= image_tag (user.photo_url), class: "photo-avatar-post-re border border-light caja" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="mx-4 pt-3">
+  <div>
+    <h6>Re-Whispear <i class="fas fa-retweet"></i></h6>
+  </div>
+  <div class="contenedor-photos">
+    <% @tweets.each do |tweet| %>
+      <%= image_tag (tweet.user.photo_url), class: "photo-avatar-post-re border border-light caja" %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+
+<!--Title-->
+<div class="border-down pt-1 pl-4 text-center">
+  <h4><%= t('.sign_in', :default => "Sign in") %></h4>
+</div>
+<div class="content-sec color-gray border-down pb-4 devise-how">
+    <div class="">
+      <!--Mensajeria-->
+      <%= render "shared/messages"%>
+
+      <!--Formulario-->
+      <div class="devise-form text-13">
+        <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+          <div><%= f.label :email %><br />
+          <%= f.email_field :email, class:"form-control text-13" %></div>
+
+          <div><%= f.label :password %><br />
+          <%= f.password_field :password, class:"form-control text-13"%></div>
+
+          <% if devise_mapping.rememberable? -%>
+            <div><%= f.check_box :remember_me, class:"mt-2" %> <%= f.label :remember_me %></div>
+          <% end -%>
+
+          <div><%= f.submit t('.sign_in', :default => "Sign in"), class:"text-13 btn btn-primary btn-lg btn-block" %></div>
+        <% end %>
+        <div class="pt-2">
+          <%= render "devise/shared/links" %>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+

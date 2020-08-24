@@ -1,0 +1,76 @@
+  <nav class="navbar-left">
+    <!--Row Icon Twitter-->
+    <div class="icon-twitter pb-1">
+      <div class="row justify-content-center pt-4">
+        <div class="col-auto">
+          <span class="mt-3 text-center" style="float:right;">
+            <%= link_to '<i class="fab fa-phoenix-framework fa-3x color-blue mr-3 zoom-icon"></i>'.html_safe, root_path %>
+          </span>
+          <p class="color-blue font-weight-bold whiper">WHISPER</p>
+        </div>
+      </div>
+    </div>
+    <!--Row Home-->
+    <div class="row text-white mt-4 ">
+      <div class="col-4 text-right pr-0">
+        <i class="fas fa-house-damage fa-sm color-blue"></i>
+      </div>
+      <div class="col-5 color-gray menu-left">
+        <p><strong>Home</strong></p>
+      </div>
+    </div>
+    <!--Row Explorar-->
+    <div class="row text-white mt-0">
+      <div class="col-4 text-right pr-0">
+        <i class="fas fa-hashtag fa-sm color-blue"></i>
+      </div>
+      <div class="col-5 color-gray menu-left">
+        <p><strong>Explorer</strong></p>
+      </div>
+    </div>
+    <!--Row My Profile-->
+    <div class="row text-white mt-0">
+      <div class="col-4 text-right pr-0">
+        <i class="fas fa-user fa-sm color-blue"></i>
+      </div>
+      <div class="col-5 color-gray menu-left">
+        <p><strong>Mi Perfil</strong></p>
+      </div>
+    </div>
+    <!--Row Configuracion-->
+    <div class="row text-white mt-0">
+      <div class="col-4 text-right pr-0">
+        <i class="fas fas fa-cog fa-sm color-blue"></i>
+      </div>
+      <div class="col-5 color-gray menu-left">
+        <p><strong>Configuracion</strong></p>
+      </div>
+    </div>
+    <!--Row Cerrar Sesion-->
+    <%if user_signed_in? %>
+      <div class="rounded-pill mx-2 devise-how pb-2">
+        <div class="row justify-content-md-center align-items-center"  >
+          <div class="col-2">
+            <%= image_tag(current_user.photo_url, class: "photo-avatar-session rounded-circle ", alt: "Avatar Session")%>
+          </div>
+          <div class="col-6">
+            <strong><i class="text-warning text-13">@<%= current_user.username.capitalize %></i></strong><br>
+            <i class="color-gray text-8"><i class="fas fa-envelope">&nbsp;</i><%= current_user.email %></i>
+          </div>
+          <div class="col-1 " style="margin:0px; padding:0px;">
+            <i class="fas fa-angle-down fa-lg text-white btn"  style="margin:0px; padding:0px;"  data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="collapse multi-collapse" id="multiCollapseExample1">
+            <div class="card card-body bg-gray rounded-0" >
+              <%= link_to "  Cerrar Sesion", destroy_user_session_path, method: :delete ,class:"fas fa-sign-out-alt text-center font-weight-bolder border-white text-white text-13"%>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </nav>

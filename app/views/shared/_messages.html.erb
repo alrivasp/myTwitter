@@ -1,0 +1,17 @@
+<div class="message-format pt-4 text-11">
+    <% if alert.present? %>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle fa-sm"></i>&nbsp;<strong>Alerta :</strong><i class="alert text-left"><%= alert %></i>
+            <button type="button" class="close text-13" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>   
+    <% elsif notice.present? %>
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <i class="fas fa-flag fa-sm"></i>&nbsp;<i class="alert text-left"><%= notice %></i>
+            <button type="button" class="close text-13" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <% end %>
+</div>

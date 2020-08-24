@@ -1,0 +1,68 @@
+<!--Title-->
+<div class="border-down pt-1 pl-4 text-center">
+  <h4><%= t('.title', :resource => resource_class.model_name.human , :default => "Edit #{resource_name.to_s.humanize}") %></h4>
+</div>
+<div class="content-sec color-gray border-down pb-4 devise-how">
+    <div class="">
+      <!--Formulario-->
+      <div class="devise-form-1 text-13">
+        <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+          <!--Mensajeria-->
+          <% if devise_error_messages!.present? %>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title color-blue" id="exampleModalLabel">No se pudo Registrar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body text-dark">
+                    <%= devise_error_messages! %>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>        
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <div><%= f.label :email %><br />
+          <%= f.email_field :email, class:"form-control text-13" %></div>
+
+          <div><%= f.label :username, "Usuario" %><br />
+          <%= f.text_field :username, class:"form-control text-13" %></div>
+
+          <div><%= f.label :photo_url, "Avatar" %><br />
+          <%= f.text_field :photo_url, class:"form-control text-13" %></div>
+
+          <%- if devise_mapping.confirmable? && resource.pending_reconfirmation? -%>
+            <p>
+              <%= t('.currently_waiting_confirmation_for_email', :email => resource.unconfirmed_email, :default => "Currently waiting confirmation for: %{email}") %>
+            </p>
+          <%- end -%>
+
+          <div><%= f.label :password %> <i>(<%= t('.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>)</i><br />
+          <%= f.password_field :password, :autocomplete => "off", class:"form-control text-13" %></div>
+
+          <div><%= f.label :password_confirmation %><br />
+          <%= f.password_field :password_confirmation, class:"form-control text-13" %></div>
+
+          <div><%= f.label :current_password %> <i>(<%= t('.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>)</i><br />
+          <%= f.password_field :current_password, class:"form-control text-13" %></div>
+
+          <div><%= f.submit t('.update', :default => "Update"), class:"text-13 btn btn-primary btn-lg btn-block mt-3" %></div>
+        <% end %>
+        <div class="pt-2">
+         <h5><%= t('.cancel_my_account', :default => 'Cancel my account') %></h5>
+
+          <p><%= t('.unhappy', :default => 'Unhappy') %>? <%= link_to t('.cancel_my_account', :default => "Cancel my account"), registration_path(resource_name), :data => { :confirm => t('.are_you_sure', :default => "Are you sure?") }, :method => :delete %>.</p>
+
+          <%= link_to t('devise.shared.links.back', :default => "Back"), :back %>
+        </div>
+      </div>
+    </div>
+</div>
