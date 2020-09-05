@@ -1,0 +1,182 @@
+<div class="content-sec color-gray">
+    <!--Title-->
+    <div class="border-down border-up pt-1 pl-4">
+        <h6 class=""><%= link_to '<i class="fas fa-long-arrow-alt-left fa-lg color-blue"></i>'.html_safe, root_path %>&nbsp;&nbsp;@<%= @user.username%> | 
+         <span class="text-13">&nbsp;&nbsp;<%= @user.my_tweets.count%>&nbsp;&nbsp;Whispers</span></h6>
+    </div>
+
+    <!--Profile-->
+    <div class="">
+        <!--Header Photo-->
+        <div class="border-down contenerdor-header" >
+            <%= image_tag(@user.header_photo, class: "photo-header", style:"width:100%; height:240px;") %>
+        </div>
+        <!--Avatar Photo-->
+        <div class="">
+            <%= image_tag(@user.photo_url, class: "perfil_photo rounded-circle ") %>
+        </div>
+        <!--Boton Photo-->
+        <div class="">
+            <% if current_user != @user %>
+                <% if current_user.is_following?(@user)%>
+                    <%= link_to '<i class="fas fa-minus"></i>&nbsp;&nbsp;Dejar de seguir'.html_safe, users_follow_path(@user.id), class:"rounded-pill btn btn-danger text-11 button-perfil", method: :post %>
+                <% else %>
+                    <%= link_to '<i class="fas fa-plus"></i>&nbsp;&nbsp;Seguir'.html_safe, users_follow_path(@user.id), class:"rounded-pill btn btn-success text-11 button-perfil", method: :post %>
+                <% end %>
+            <% else %>
+                <%= link_to "Editar perfil", edit_user_registration_path, class: "rounded-pill btn btn-outline-info text-11 button-perfil" %>
+            <% end %>
+        </div>
+        <!--Datos de perfil-->
+        <div class="mt-5 pt-4 date-perfil">
+            <span class="text-warning">@<%= @user.username %></span><br>
+            <i class="fas fa-envelope color-gray text-13"></i><span class="color-gray text-8">&nbsp; <%= @user.email %></span><br>
+            <i class="fas fa-calendar-check color-gray text-13"></i><span class="color-gray text-8">&nbsp; Miembro desde el     <%=  I18n.l(@user.created_at, format: '%A, %d de %B de %Y') %></span><br>
+            <span class="color-gray text-13"><%= @followed %> Siguiendo</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="color-gray text-13"><%= @follow %> Siguidores</span>
+        </div>
+    </div>
+
+    <!--Panel de posteos-->
+    <div class="mt-4 pt-4">
+        <div class="card mt-3 tab-card card-special rounded-0 border-down">
+            <div class="card-header tab-card-header bg-whisper border-down rounded-0">
+                <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link color-gray" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">Whispers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link color-gray" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Re - Whispers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link color-gray" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Three" aria-selected="false">Me gusta</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link color-gray" id="four-tab" data-toggle="tab" href="#four" role="tab" aria-controls="Four" aria-selected="false">Siguiendo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link color-gray" id="five-tab" data-toggle="tab" href="#five" role="tab" aria-controls="Five" aria-selected="false">Seguidores</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content" id="myTabContent">
+                <!--Whisper-->
+                <div class="tab-pane fade show active bg-whisper" id="one" role="tabpanel" aria-labelledby="one-tab">
+                    <!--Posteos-->
+                    <% @tweets.each do |tweet| %>
+                        <%= render "shared/card_tweet", tweet: tweet %>
+                    <% end %>
+
+                    <!--Paginacion-->
+                    <div class="p-4">
+                        <div class="text-center">
+                            <%= link_to_prev_page @tweets, "Mostrar Menos Whisper", class: "btn btn-primary btn-sm text-11" %>
+                            <i class="btn btn-light btn-sm text-13 "><%= @tweets.current_page %></i>
+                            <%= link_to_next_page @tweets, "Mostrar Mas Whisper", class:"btn btn-primary btn-sm text-11"%>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Re Whisper-->
+                <div class="tab-pane fade bg-whisper" id="two" role="tabpanel" aria-labelledby="two-tab">
+                    <!--Posteos-->
+                    <% @retweets.each do |tweet| %>
+                        <%= render "shared/card_tweet", tweet: tweet %>
+                    <% end %>
+
+                    <!--Paginacion-->
+                    <div class="p-4">
+                        <div class="text-center">
+                            <%= link_to_prev_page @retweets, "Mostrar Menos Whisper", class: "btn btn-primary btn-sm text-11" %>
+                            <i class="btn btn-light btn-sm text-13 "><%= @retweets.current_page %></i>
+                            <%= link_to_next_page @retweets, "Mostrar Mas Whisper", class:"btn btn-primary btn-sm text-11"%>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Me gusta-->
+                <div class="tab-pane fade bg-whisper" id="three" role="tabpanel" aria-labelledby="three-tab">
+                    <!--Posteos-->
+                    <% @likes.each do |tweet| %>
+                        <%= render "shared/card_tweet", tweet: tweet %>
+                    <% end %>
+
+                    <!--Paginacion-->
+                    <div class="p-4">
+                        <div class="text-center">
+                            <%= link_to_prev_page @likes, "Mostrar Menos Whisper", class: "btn btn-primary btn-sm text-11" %>
+                            <i class="btn btn-light btn-sm text-13 "><%= @likes.current_page %></i>
+                            <%= link_to_next_page @likes, "Mostrar Mas Whisper", class:"btn btn-primary btn-sm text-11"%>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Siguiendo-->
+                <div class="tab-pane fade bg-whisper" id="four" role="tabpanel" aria-labelledby="four-tab">
+                    <% @following.each do |user| %>
+                    <article class="whisper-post py-3"> 
+                        <div class="row justify-content-md-center align-items-center">
+                            <div class="col-1">
+                                <%= link_to (image_tag (user.photo_url), 
+                                    class: 'photo-avatar-post rounded-circle', alt: "Avatar Post"), 
+                                    tweet_detail_path(user)
+                                %>
+                            </div>
+                            <div class="col-3">
+                                <span class="text-warning text-13">@<%= user.username.capitalize %></span>
+                            </div>
+                            <div class="col-5">
+                                <span class="color-gray text-13"><i class="fas fa-envelope color-gray text-13"></i>&nbsp;&nbsp;&nbsp;<%= user.email %></span>
+                            </div>
+                            <div class="col-2">
+                                <%= link_to (@user.is_following?(user) ? "<i class='fas fa-user-minus text-warning text-13'></i>" : "<i class='fas fa-user-plus color-blue-deep text-13'></i>").html_safe, 
+                                    users_follow_path(user.id), 
+                                    class: "follow-btn",
+                                    'title' => (@user.is_following?(user) ? "Dejar de Seguir" : "Seguir"),
+                                    'data-toggle' => 'tooltip',
+                                    'data-placement' => 'right',
+                                    method: :post
+                                %>
+                            </div>
+                        </div>
+                    </article>
+                    <% end %>
+                </div>
+
+                <!--Seguidores-->
+                <div class="tab-pane fade bg-whisper" id="five" role="tabpanel" aria-labelledby="five-tab">
+                     <% @follower.each do |user| %>
+                    <article class="whisper-post py-3"> 
+                        <div class="row justify-content-md-center align-items-center">
+                            <div class="col-1">
+                                <%= link_to (image_tag (user.photo_url), 
+                                    class: 'photo-avatar-post rounded-circle', alt: "Avatar Post"), 
+                                    tweet_detail_path(user)
+                                %>
+                            </div>
+                            <div class="col-3">
+                                <span class="text-warning text-13">@<%= user.username.capitalize %></span>
+                            </div>
+                            <div class="col-5">
+                                <span class="color-gray text-13"><i class="fas fa-envelope"></i>&nbsp;&nbsp;&nbsp;<%= user.email %></span>
+                            </div>
+                            <div class="col-2">
+                            <% if current_user != user%>
+                                <%= link_to (@user.is_following?(user) ? "<i class='fas fa-user-minus text-warning text-13'></i>" : "<i class='fas fa-user-plus color-blue-deep text-13'></i>").html_safe, 
+                                    users_follow_path(user.id), 
+                                    class: "follow-btn",
+                                    'title' => (@user.is_following?(user) ? "Dejar de Seguir" : "Seguir"),
+                                    'data-toggle' => 'tooltip',
+                                    'data-placement' => 'right',
+                                    method: :post
+                                %>
+                            <% end %>
+                            </div>
+                        </div>
+                    </article>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

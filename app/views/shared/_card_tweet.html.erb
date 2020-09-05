@@ -1,0 +1,203 @@
+ <!--Post Completo-->
+<article class="whisper-post py-4">
+    <!--Muestra si es retweet o tweet propio-->
+    <% if tweet.is_retweet?%>
+        <!--Es retweet-->
+    <div class="zoom-post">
+        <div class="zoom-post-row">
+            <!--Fila 1-->
+            <div class="row justify-content-center">
+                <div class="col-7 pl-1">
+                    <i class="fas fa-retweet color-tiara text-8"></i> <%=  link_to "#{tweet.user.username} re-Whispeo", tweet.tweet_ref, class:"color-tiara text-decoration-none text-8" %>
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="text-11 color-tiara"><%= link_to '<i class=" fas fa-history" aria-hidden="true"></i> '.html_safe+distance_of_time_in_words(Time.now, tweet.created_at), tweet_path(tweet), class: "color-tiara text-decoration-none" %></span>
+                </div>
+            </div>
+
+            <!--Fila 2-->
+            <div class="row mx-4 px-4">
+                <div class="col- px-3">
+                    <!--Avatar-->
+                    <div class="mb-1">
+                        <%= link_to (image_tag (tweet.tweet_ref.user.photo_url), 
+                            class: 'photo-avatar-post rounded-circle', alt: "Avatar Post"), 
+                            tweet_detail_path(tweet.tweet_ref.user)
+                        %>
+                    </div>
+                    <!-- Amigo-->
+                    <% if user_signed_in? && current_user != tweet.user %>
+                        <div class="text-center">
+                            <%= link_to (current_user.is_following?(tweet.user) ? "<i class='fas fa-user-minus color-tiara ml-1 text-8'></i>" : "<i class='fas fa-user-plus color-danube ml-1 text-8'></i>").html_safe, 
+                                users_follow_path(tweet.user.id), 
+                                class: "follow-btn",
+                                'title' => (current_user.is_following?(tweet.user) ? "Dejar de Seguir" : "Seguir"),
+                                'data-toggle' => 'tooltip',
+                                'data-placement' => 'right',
+                                method: :post
+                            %>
+                        </div>
+                    <% end %>
+                </div>
+
+                <div class="col-10 ">
+                    <!--Nombre y fecha-->
+                    <div>
+                        <i class="text-13 text-warning"><strong>@<%= tweet.tweet_ref.user.username.capitalize %></strong></i>
+                        &nbsp;&nbsp;&nbsp;
+                        <span class="text-11 color-time"><%= link_to '<i class=" fas fa-history" aria-hidden="true"></i> '.html_safe+distance_of_time_in_words(Time.now, tweet.tweet_ref.user.created_at), tweet_path(tweet.tweet_ref), class: "color-time text-decoration-none" %></span>
+                    </div>
+                    <!--Detalle-->
+                    <div class="text-11 border-down-white pb-2">
+                        <span class="body-content">&nbsp;&nbsp;&nbsp;<%= tweet.content.html_safe %></span>
+                    </div>
+
+                    <!--Botones Likes y Re-Tweet-->
+                    <div class="text-11 div-like-rewhisper pt-1">
+                        <div class="row">
+                            <!--Like-->
+                            <div class="col-6">
+                                <span>
+                                    <% if tweet.is_liked?(current_user) %>
+                                        <%= link_to '<i class="fas fa-heart"></i>'.html_safe, 
+                                            tweet_likes_path(tweet), 
+                                            method: :post,
+                                            class: "tooltips text-warning", 
+                                            title: '', 
+                                            data: { toggle: 'tooltip', placement: 'top', original_title: "Quitar Like" }
+                                        %>
+                                    <% else %>
+                                        <%= link_to '<i class="far fa-heart"></i>'.html_safe, 
+                                            tweet_likes_path(tweet), 
+                                            method: :post, 
+                                            class: "text-white tooltips", 
+                                            title: '', 
+                                            data: { toggle: 'tooltip', placement: 'top', original_title: "Like" }
+                                        %>
+                                    <% end %>
+                                    &nbsp;&nbsp;<%= tweet.likes.count %>
+                                </span>
+                            </div>
+
+                            <!--Retweet-->
+                            <div class="col-6">
+                                <span>
+                                    <% if tweet.is_rt?(current_user, tweet) %>
+                                        <%= link_to '<i class="fas fa-retweet"></i>'.html_safe, 
+                                            tweet_retweet_path(tweet), 
+                                            method: :post, 
+                                            class: "text-white text-decoration-none tooltips", 
+                                            title: '', 
+                                            data: { toggle: 'tooltip', placement: 'top', original_title: "Re-Wispear" }
+                                        %>
+                                    <% else %>
+                                        <%= link_to '<i class="fas fa-retweet"></i>'.html_safe, 
+                                            tweet_retweet_path(tweet), 
+                                            method: :post, 
+                                            class: " text-warning text-decoration-none tooltips", 
+                                            title: '', 
+                                            data: { toggle: 'tooltip', placement: 'top', original_title: "Quitar Re-Wispear" }%>
+                                    <% end %>
+                                    &nbsp;&nbsp;<%= tweet.count_rt %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <% else %>
+    <div class="zoom-post">
+        <div class="zoom-post-row">
+            <!--Es tweet-->
+            <div class="row mx-4 px-4">
+                <div class="col- px-3">
+                    <!--Avatar-->
+                    <div class="mb-1">
+                        <%= link_to (image_tag (tweet.user.photo_url), 
+                            class: 'photo-avatar-post rounded-circle', alt: "Avatar Post"), 
+                            tweet_detail_path(tweet.user_id)
+                        %>
+                    </div>
+                    <!-- Amigo-->
+                    <% if user_signed_in? && current_user != tweet.user %>
+                        <div class="text-center ">
+                            <%= link_to (current_user.is_following?(tweet.user) ? "<i class='fas fa-user-minus color-tiara ml-1 text-8'></i>" : "<i class='fas fa-user-plus color-danube ml-1 text-8'></i>").html_safe, 
+                                users_follow_path(tweet.user.id), 
+                                class: "follow-btn",
+                                'title' => (current_user.is_following?(tweet.user) ? "Dejar de Seguir" : "Seguir"),
+                                'data-toggle' => 'tooltip',
+                                'data-placement' => 'right',
+                                method: :post
+                            %>
+                        </div>
+                    <% end %>
+                </div>
+
+                <div class="col-10 ">
+                    <!--Nombre y fecha-->
+                    <div>
+                        <i class="text-13 text-warning"><strong>@<%= tweet.user.username.capitalize %></strong></i>
+                        &nbsp;&nbsp;&nbsp;
+                        <span class="text-11 color-time"><%= link_to '<i class=" fas fa-history" aria-hidden="true"></i> '.html_safe+distance_of_time_in_words(Time.now, tweet.created_at), tweet_path(tweet), class: "color-time text-decoration-none" %></span>
+                    </div>
+                    <!--Detalle-->
+                    <div class="text-11 border-down-white pb-2">
+                        <span class="body-content">&nbsp;&nbsp;&nbsp;<%= tweet.content.html_safe %></span>
+                    </div>
+
+                    <!--Botones Likes y Re-Tweet-->
+                    <div class="text-11 div-like-rewhisper pt-1">
+                        <div class="row">
+                            <!--Like-->
+                            <div class="col-6">
+                                <span>
+                                    <% if tweet.is_liked?(current_user) %>
+                                        <%= link_to '<i class="fas fa-heart"></i>'.html_safe, 
+                                            tweet_likes_path(tweet), 
+                                            method: :post,
+                                            class: "tooltips text-warning", 
+                                            title: '', 
+                                            data: { toggle: 'tooltip', placement: 'top', original_title: "Quitar Like" }
+                                        %>
+                                    <% else %>
+                                        <%= link_to '<i class="far fa-heart"></i>'.html_safe, 
+                                            tweet_likes_path(tweet), 
+                                            method: :post, 
+                                            class: "text-white tooltips", 
+                                            title: '', 
+                                            data: { toggle: 'tooltip', placement: 'top', original_title: "Like" }
+                                        %>
+                                    <% end %>
+                                    &nbsp;&nbsp;<%= tweet.likes.count %>
+                                </span>
+                            </div>
+
+                            <!--Retweet-->
+                            <div class="col-6">
+                                <span>
+                                    <% if tweet.is_rt?(current_user, tweet) %>
+                                        <%= link_to '<i class="fas fa-retweet"></i>'.html_safe, 
+                                            tweet_retweet_path(tweet), 
+                                            method: :post, 
+                                            class: "text-white text-decoration-none tooltips", 
+                                            title: '', 
+                                            data: { toggle: 'tooltip', placement: 'top', original_title: "Re-Wispear" }
+                                        %>
+                                    <% else %>
+                                        <%= link_to '<i class="fas fa-retweet"></i>'.html_safe, 
+                                            tweet_retweet_path(tweet), 
+                                            method: :post, 
+                                            class: " text-warning text-decoration-none tooltips", 
+                                            title: '', 
+                                            data: { toggle: 'tooltip', placement: 'top', original_title: "Quitar Re-Wispear" }%>
+                                    <% end %>
+                                    &nbsp;&nbsp;<%= tweet.count_rt %>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <% end %>
+</article>

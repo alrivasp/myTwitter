@@ -1,13 +1,38 @@
 class Tweet < ApplicationRecord
+  include ActionView::Helpers::UrlHelper
+  before_destroy :delete_tweet
+  before_save :add_hashtags
+
   belongs_to :user
   #Canitdad de like
-  has_many :likes
+  has_many :likes, dependent: :destroy
   #Usuario que le dieron Like
   has_many :linking_users, :through => :likes, :source => :user
 
   validates :content, presence: true, length: { maximum: 140, too_long: "%{count} maximo de caracteres permitidos" }
 
-  paginates_per 5
+  paginates_per 50
+
+  scope :tweets_for_me, -> (user) { where(user_id: user.friends.pluck(:friend_id).push(user.id)) }
+
+  def delete_tweet
+    Tweet.where(rt_ref: self.id)
+    Tweet.where(user_id: self.user_id).update_all(rt_ref: nil)
+  end
+
+  #metodo para agregar hashtag
+  def add_hashtags
+    new_array = []
+    self.content.split(" ").each do |word|
+      if word.start_with?("#") # #latam
+        word_parsed = word.sub '#','%23'
+        word = link_to( word, Rails.application.routes.url_helpers.root_path + "?search="+word_parsed )
+      end
+      new_array.push(word)
+    end
+
+    self.content = new_array.join(" ")
+  end
 
   #metodo para saber si user le hizo like a un twitter
   def is_liked?(user)
@@ -42,15 +67,17 @@ class Tweet < ApplicationRecord
     Tweet.where(rt_ref: self.id).count
   end
 
-  #
+  #consulta si fue retweteado
   def is_retweet?
     rt_ref ? true : false
   end
 
+  #Devuelve las referencias de retweets
   def tweet_ref
     Tweet.find(self.rt_ref)
   end
 
+  #Devuelve lista de retweet
   def list_of_rt
     list = Tweet.where(rt_ref: self)
     return list

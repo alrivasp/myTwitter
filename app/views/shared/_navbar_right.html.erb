@@ -1,3 +1,108 @@
 <nav class="navbar-right">
-    <p>DERECHO</p>
+    <!--Captura de TT y Posibles amigos via Appilaction Controller-->
+    <%if user_signed_in? %>
+        <% trendingtopic = ApplicationController.new.trending %>
+        <% whoToFollow = ApplicationController.new %>
+        <% not_follow = whoToFollow.user_full_name(current_user.id)%>
+    <% end %>
+    
+    <% if user_signed_in? %>
+    <!--Busqueda-->
+    <div class=" m-4">
+        <%= form_tag(all_whispers_path, method: :get) do %>
+            <div class="form-group">
+                <i class="fas fa-search fa-lg search_icon mr-2"></i>
+                <%= text_field_tag(:search, params[:search], class: "form-control rounded-pill text-13", placeholder: "Buscar en Whisper ...") %>
+                <div class="mt-3" style="float:right;">
+                    <%= submit_tag("Buscar", :class => "btn btn-primary btn-sm rounded-pill text-13 mr-2") %>
+                    <%= link_to "Limpiar", root_path, :class => "btn btn-success btn-sm rounded-pill text-13" %>
+                </div>
+            </div>
+        <% end %>
+    </div>
+
+    <!--Tendencia Trending Topic-->
+    <div class="mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="card text-13" style="width: 100%;">
+                    <div class="card-header">
+                        <strong><span>Tendencias para ti</span><i class="fas fa-hashtag color-blue-deep fa-lg" style="float: right;"></i></strong>
+                    </div>
+                    <%if user_signed_in? %>
+                        <% trendingtopic.each do |key, value| %>
+                             <ul class="list-group list-group-flush">
+                                <li class="list-group-item hashtag-title"><strong><span class=""><%= key.html_safe %></span></strong><br>
+                                    <small class="color-black"><%= value %> Whispers</small>
+                                </li>
+                            </ul>
+                        <% end %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--A quien Seguir-->
+    <div class="mt-4 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="card text-13" style="width: 100%;">
+                    <div class="card-header">
+                        <strong><span class="text-13">A quien Seguir</span><i class="fas fa-users color-blue-deep fa-lg" style="float: right;"></i></strong>
+                    </div>
+                    <%if user_signed_in? %>
+                        <% not_follow.each do |user| %>
+                             <ul class="list-group list-group-flush">
+                                <li class="list-group-item hashtag-title p-2">
+                                    <div class="row justify-content-md-center align-items-center">
+                                        <!--Avatar-->
+                                        <div class="col-2">
+                                            <%= link_to (image_tag (user.photo_url), 
+                                                class: 'photo-avatar-post-follow rounded-circle', alt: "Avatar Post"), 
+                                                tweet_detail_path(user.id)
+                                            %>
+                                        </div>
+                                        <!--Identificacion-->
+                                        <div class="col-4">
+                                            <span class="color-black text-11"><strong>@<%= user.username  %></strong></span><br>
+                                        </div>
+                                         <!--Boton Seguir-->
+                                        <div class="col-auto">
+                                            <%= link_to '<span class="text-white text-8"><i class="fas fa-plus text-white"></i>&nbsp;&nbsp;Seguir</span>'.html_safe, 
+                                                users_follow_path(user.id), 
+                                                class:"rounded-pill btn btn-primary text-8 text-white", 
+                                                method: :post 
+                                            %>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        <% end %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% else %>
+
+        <!--Registrarse si no esta registrado-->
+        <div class="m-4 bg-light rounded-lg  p-3">
+            <h4 class="text-center">¿Eres nuevo en Whisper?</h4>
+            <p class="color-blue-deep text-center">Regístrate ahora para obtener tu propia cronología personalizada.</p>
+            <%= link_to "Registrarse", new_user_registration_path, class:"btn bg-gray text-light btn-lg btn-block rounded-pill m-2 text-13"%>
+        </div>
+    <% end %>
+
+    <!--Informacion de Desarrollador-->
+    <div class="mt-4 text-center border-up">
+        <p class="color-gray text-8 my-4">Desarrollado por <i class="text-warning text-13">Alvaro Rivas&nbsp;&nbsp;&nbsp;</i><%= link_to (image_tag ('ar_logo'), class:"rounded-circle",  style:"width:30px;"), "https://github.com/alrivasp/myTwitter", :target => '_blank' %><br>
+            Desafio Twitter
+        </p>
+    </div>
+
 </nav>
+
+
+   

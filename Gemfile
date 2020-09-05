@@ -33,7 +33,13 @@ gem 'jbuilder', '~> 2.5'
 gem 'devise-i18n-views'
 #paginacion
 gem 'kaminari', :git => 'https://github.com/kaminari/kaminari'
+#Modulo de administracion
+gem 'activeadmin'
+#Skin Active Admin
+gem 'active_skin'
 
+#busqueda
+gem 'ransack' , github: 'activerecord-hackery/ransack'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

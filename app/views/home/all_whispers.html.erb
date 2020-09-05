@@ -1,26 +1,8 @@
 <div class="content-sec color-gray">
     <!--Title-->
     <div class="border-down pt-1 pl-4">
-        <h5 class="">Inicio</h5>
+        <h5 class=""><%= link_to '<i class="fas fa-long-arrow-alt-left fa-lg color-blue"></i>'.html_safe, root_path %>&nbsp;&nbsp;Explorar</h5>
     </div>
-
-    <!--Mensajeria-->
-    <%= render "shared/messages"%>
-
-    <!--Nuevo Post-->
-    <% if user_signed_in? %>
-        <div class="border-down">
-            <div class="row justify-content-md-center">
-                <div class="col-1 mr-3">
-                    <%= image_tag(current_user.photo_url, class: "photo-avatar rounded-circle ", alt: "Avatar Session")%>
-                </div>
-                <div class="col-9">
-                <!--Renderizar formulario tweet -->
-                <%= render 'tweets/form', tweet: @tweet %>
-                </div>
-            </div>
-        </div>
-    <% end %>
 
     <!--Posteos-->
     <% @tweets.each do |tweet| %>

@@ -36,8 +36,11 @@
           <div><%= f.label :username, "Usuario" %><br />
           <%= f.text_field :username, class:"form-control text-13" %></div>
 
-          <div><%= f.label :photo_url, "Avatar" %><br />
+          <div><%= f.label :photo_url, "Foto Avatar" %><br />
           <%= f.text_field :photo_url, class:"form-control text-13" %></div>
+
+          <div><%= f.label :header_photo, "Foto Cabecera" %><br />
+          <%= f.text_field :header_photo, class:"form-control text-13" %></div>
 
           <%- if devise_mapping.confirmable? && resource.pending_reconfirmation? -%>
             <p>

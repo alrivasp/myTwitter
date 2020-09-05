@@ -1,4 +1,5 @@
   <nav class="navbar-left">
+
     <!--Row Icon Twitter-->
     <div class="icon-twitter pb-1">
       <div class="row justify-content-center pt-4">
@@ -10,44 +11,64 @@
         </div>
       </div>
     </div>
+
     <!--Row Home-->
+    <%if user_signed_in? %>
     <div class="row text-white mt-4 ">
       <div class="col-4 text-right pr-0">
         <i class="fas fa-house-damage fa-sm color-blue"></i>
       </div>
       <div class="col-5 color-gray menu-left">
-        <p><strong>Home</strong></p>
+        <p><strong><%= link_to "Home", root_path, class: "text-decoration-none color-gray"%></strong></p>
       </div>
     </div>
+    <% end %>
+
     <!--Row Explorar-->
     <div class="row text-white mt-0">
       <div class="col-4 text-right pr-0">
         <i class="fas fa-hashtag fa-sm color-blue"></i>
       </div>
       <div class="col-5 color-gray menu-left">
-        <p><strong>Explorer</strong></p>
+        <p><strong><%= link_to "Explorar", all_whispers_path, class: "text-decoration-none color-gray"%></strong></p>
       </div>
     </div>
+
+  <!--Validar Login-->
+  <%if user_signed_in? %>
     <!--Row My Profile-->
     <div class="row text-white mt-0">
       <div class="col-4 text-right pr-0">
         <i class="fas fa-user fa-sm color-blue"></i>
       </div>
       <div class="col-5 color-gray menu-left">
-        <p><strong>Mi Perfil</strong></p>
+        <p><strong><%= link_to "Mi Perfil", home_profile_path, class: "text-decoration-none color-gray"%></strong></p>
       </div>
     </div>
+
     <!--Row Configuracion-->
     <div class="row text-white mt-0">
       <div class="col-4 text-right pr-0">
         <i class="fas fas fa-cog fa-sm color-blue"></i>
       </div>
       <div class="col-5 color-gray menu-left">
-        <p><strong>Configuracion</strong></p>
+        <p><strong><%= link_to "Configuracion", edit_user_registration_path, class: "text-decoration-none color-gray"%></strong></p>
       </div>
     </div>
+
+    <!--Row Admin-->
+    <% if current_user.admin %>
+    <div class="row text-white mt-0">
+      <div class="col-4 text-right pr-0">
+        <i class="fas fa-tools fa-sm color-blue"></i>
+      </div>
+      <div class="col-5 color-gray menu-left">
+        <p><strong><%= link_to "Administracion", admin_user_path(current_user), class: "text-decoration-none color-gray"%></strong></p>
+      </div>
+    </div>
+    <% end %>
+    
     <!--Row Cerrar Sesion-->
-    <%if user_signed_in? %>
       <div class="rounded-pill mx-2 devise-how pb-2">
         <div class="row justify-content-md-center align-items-center"  >
           <div class="col-2">
@@ -63,14 +84,15 @@
         </div>
       </div>
 
+      <!--Collapse Boton-->
       <div class="row">
         <div class="col">
           <div class="collapse multi-collapse" id="multiCollapseExample1">
             <div class="card card-body bg-gray rounded-0" >
-              <%= link_to "  Cerrar Sesion", destroy_user_session_path, method: :delete ,class:"fas fa-sign-out-alt text-center font-weight-bolder border-white text-white text-13"%>
+              <%= link_to '<i class="fas fa-sign-out-alt"></i>&nbsp;Cerrar Sesion'.html_safe , destroy_user_session_path, method: :get, class: "text-center font-weight-bolder border-white text-white text-13" %>
             </div>
           </div>
         </div>
       </div>
-    <% end %>
+  <% end %>
   </nav>

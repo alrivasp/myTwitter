@@ -23,6 +23,8 @@ body {
     min-height: 100vh;
     position: fixed;
     border-left: 1px solid #2f414e;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .content-ppal {
@@ -57,6 +59,10 @@ body {
     color: #e2e2e2;
 }
 
+.color-black {
+    color: #2f414e;
+}
+
 .color-blue-deep{
     color: #7f6edf;
 }
@@ -87,10 +93,46 @@ body {
 
 .whisper-post{
     border-bottom: 1px solid #2f414e;
+    transition:all .5s ease-in-out;
+}
+
+.zoom-post {
+    
+}
+
+.zoom-post:hover .zoom-post-row{
+    -webkit-transform:scale(1.03);transform:scale(1.03);
+    
+}
+
+.zoom-post-row{
+    transition:all .9s ease-in-out;
+}
+
+.tab-content{
+    background: #2f414e;
 }
 
 .whisper-post:hover{
     background: #2f414e !important;
+}
+
+.contenerdor-header{
+    overflow:hidden;
+}
+
+.contenerdor-header:hover .photo-header{
+    -webkit-transform:scale(1.3);transform:scale(1.3);
+}
+
+.photo-header {
+    -webkit-transition:all 0.9s ease; /* Safari & Chrome */ 
+    transition:all 0.9s ease; 
+}
+
+.devise-how{
+    overflow:hidden;
+    transition:all .9s ease-in-out;
 }
 
 .devise-how:hover{
@@ -122,7 +164,7 @@ body {
 .photo-avatar{
     width: 70px;
     height: 70px;
-    border: solid 2px #ffff;
+    -webkit-box-shadow: 0px 0px 10px 10px #2f414e;
 }
 
 .div-button-whispear{
@@ -142,9 +184,16 @@ body {
 }
 
 .photo-avatar-post{
-    width: 40px;
-    height: 40px;
-    border: solid 0px #ffff;
+    width: 45px;
+    height: 45px;
+    -webkit-box-shadow: 0px 0px 5px 5px #2f414e;
+    transition: 0.5s;
+}
+
+.photo-avatar-post-follow{
+    width: 45px;
+    height: 45px;
+    transition: 0.5s;
 }
 
 .photo-avatar-session{
@@ -185,14 +234,16 @@ body {
 .caja{
     width: 35px;
     height: 35px;
-    border: solid 0px #ffff;
-    transition: 0.7s;
+    transition: 0.5s;
 }
+
 .caja:hover{
-    transform: scale(2.3);
-    z-index: 2;
+    transform: scale(1.8);
+    z-index: 999;
     box-shadow: 2px 2px 2px #000;
 }
+
+
 
 /* Efectos Icono Principal*/
 
@@ -207,10 +258,164 @@ body {
 .zoom-icon:hover{
 	-webkit-transform: scale(1.4,1.4);
 	-webkit-transition-timing-function: ease-out;
-	-webkit-transition-duration: 100ms;
+	-webkit-transition-duration: 200ms;
 	-moz-transform: scale(1,4,1.4);
 	-moz-transition-timing-function: ease-out;
-	-moz-trasition-duration: 100ms;
+	-moz-trasition-duration: 200ms;
+}
+///////////////////////////////////////////////////////
+
+.tooltip-inner {
+    max-width: 200px;
+    padding: 3px 8px;
+    color: #fff;
+    text-align: center;
+    background-color: #1da1f2;
+    border-radius: .25rem;
 }
 
+.tooltip.bs-tooltip-auto[x-placement^=left] .arrow::before, .tooltip.bs-tooltip-left .arrow::before {
+    right: 0;
+    margin-top: -3px;
+    content: "";
+    border-width: 5px 0 5px 5px;
+    border-left-color: #1da1f2;
+}
 
+.tooltip.bs-tooltip-auto[x-placement^=top] .arrow::before, .tooltip.bs-tooltip-top .arrow::before {
+       margin-left: -3px;
+       content: "";
+       border-width: 5px 5px 0;
+       border-top-color: #1da1f2;
+}
+
+.tooltip.bs-tooltip-auto[x-placement^=right] .arrow::before, .tooltip.bs-tooltip-right .arrow::before {
+       margin-top: -3px;
+       content: "";
+       border-width: 5px 5px 5px 0;
+       border-right-color: #1da1f2;
+}
+
+.tooltip.bs-tooltip-auto[x-placement^=bottom] .arrow::before, .tooltip.bs-tooltip-bottom .arrow::before {
+       margin-left: -3px;
+       content: "";
+       border-width: 0 5px 5px;
+       border-bottom-color: #1da1f2;
+}
+
+////////////////////////////////////////////
+/*Estilos profile*/
+.avatar-profile{
+    width: 100px;
+    height: 100px;
+}
+
+.search_icon{
+    position: relative;
+    float: right;
+    top: 28px;
+    left: -30px;
+    color: #CCC;
+  }
+
+.body-content a{
+    color: #7ec5f1;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.list-group-item{
+    padding-top: 2px;
+    padding-bottom: 2px;
+    color: yellow !important;
+}
+
+.list-group-item:hover{
+    background: #b6c6cc !important;
+}
+
+.hashtag-title a{
+    color: #7f6edf !important;
+    text-decoration: none !important;
+    font-size: 12px;
+}
+
+.perfil_photo{
+    position: relative;
+    float: left;
+    top: -80px;
+    left: 50px;
+    color: #CCC;
+    width: 140px;
+    height: 140px;
+    border: solid 4px #2f414e;
+    transition: 0.5s;
+  }
+
+  .button-perfil{
+    position: relative;
+    float: right;
+    top: 30px;
+    left: -60px;
+  }
+
+  .date-perfil{
+    position: relative;
+    float: left;
+    top: 0px;
+    left: -60px;
+  }
+
+  .card-special{
+    width: 100%;
+    border: 0px;
+  }
+
+  .bg-whisper{
+    background: #001a25;
+  }
+
+  .bg-whisper2{
+      background: #2f414e;
+  }
+
+
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #fff;
+    background-color: #2f414e;
+    border-color: #2f414e #2f414e #2f414e;
+}
+
+.fallowed{
+    position: relative;
+    float: left;
+    top: 0px;
+    left: -60px;
+  }
+
+.perfil_photo:hover{
+  border-radius:50%;
+  -webkit-border-radius:50%;
+  box-shadow: 0px 0px 15px 15px #ec731e;
+  -webkit-box-shadow: 0px 0px 8px 8px #ec731e;
+  transform: rotate(360deg) scale(1.4);
+  -webkit-transform: rotate(360deg);
+}
+
+.photo-avatar-post:hover{
+    border-radius:50%;
+    -webkit-border-radius:50%;
+    box-shadow: 0px 0px 4px 4px #ec731e;
+    -webkit-box-shadow: 0px 0px 4px 4px #ec731e;
+    transform: rotate(360deg) scale(1.4);
+    -webkit-transform: rotate(360deg);
+}
+
+  .color-danube{
+      color:#1da1f2;
+  }
+
+  .color-tiara{
+      color: #c1cbca;
+  }

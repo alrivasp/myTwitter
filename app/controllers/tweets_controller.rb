@@ -1,7 +1,9 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
   before_action :set_current_tweet, only: [:likes, :retweet]
+  before_action :set_user_id, only: [:detail]
 
+  #Metodo Like
   def likes
     if @tweet.is_liked?(current_user)
       @tweet.remove_like(current_user)
@@ -16,6 +18,7 @@ class TweetsController < ApplicationController
     end
   end
 
+  #Metodo retweet
   def retweet
     if current_user.present?
       if @tweet.is_rt?(current_user, @tweet.id)
@@ -30,6 +33,22 @@ class TweetsController < ApplicationController
     end
   end
 
+  #Metodo Detalle
+  def detail
+    if current_user.present?
+      @user = User.find(@id)
+      @following = @user.users_followed
+      @follower = @user.my_follower
+      @likes = @user.my_likes.order(created_at: :desc).page params[:page]
+      @retweets = @user.retweets_give_it_now.order(created_at: :desc).page params[:page]
+      @tweets = @user.my_tweets.order(created_at: :desc).page params[:page]
+      @followed = @user.users_followed.count
+      @follow = Friend.where(friend_id: @user).count
+    else
+      redirect_to new_user_session_path
+    end
+  end
+
   # GET /tweets
   # GET /tweets.json
   def index
@@ -39,7 +58,11 @@ class TweetsController < ApplicationController
   # GET /tweets/1
   # GET /tweets/1.json
   def show
-    @tweets = @tweet.list_of_rt
+    if current_user.present?
+      @tweets = @tweet.list_of_rt
+    else
+      redirect_to new_user_session_path
+    end
   end
 
   # GET /tweets/new
@@ -109,6 +132,10 @@ class TweetsController < ApplicationController
 
     def set_current_tweet
       @tweet = Tweet.find(params[:tweet_id])
+    end
+
+    def set_user_id
+      @id = params[:tweet_id]
     end
 
     # Only allow a list of trusted parameters through.
